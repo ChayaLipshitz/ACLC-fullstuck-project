@@ -6,18 +6,18 @@ ACLC is a university management system that provides a variety of services for s
 
 # **Features**
 **Students:**   
-Upload homework
-View previous assignments
-View grades
-More
+Upload homework  
+View previous assignments  
+View grades  
+More  
 **Teachers:**    
-View student assignments (each teacher has access only to their students)
-Grade assignments
-Give grades
+View student assignments (each teacher has access only to their students)  
+Grade assignments  
+Give grades  
 **Secretaries:**     
-Manage - view/add/delete data for all users - students and teachers
-Manage user permissions
+Manage - view/add/delete data for all users - students and teachers  
+Manage user permissions  
 # **Technologies**
-Database: MySQL
-Server: NodeJS
-Frontend: React
+Database: MySQL  
+Server: NodeJS  
+Frontend: React  
