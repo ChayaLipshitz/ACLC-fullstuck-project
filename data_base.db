@@ -1,14 +1,26 @@
 CREATE DATABASE  IF NOT EXISTS `aclc` ;
 USE `aclc`;
+SHOW TABLES;
+
 
 -- tables names: classes, teachers, students, courseclasscontact, courses, grades, secretary, schedule
+
+drop table if exists schedules;
+drop table if exists secretary;
+drop table if exists grades;
+drop table if exists courseclasscontact;
+drop table if exists courses;
+drop table if exists students;
+drop table if exists teachers;
+drop table if exists classes;
 --
 -- Table structure for table `classes`
 --
 CREATE TABLE IF NOT EXISTS `classes` (
   `classId` int NOT NULL,
   `className` varchar(255) DEFAULT NULL,
-  `passingAvarage` int DEFAULT NULL
+  `passingAvarage` int DEFAULT NULL,
+  PRIMARY KEY (`classId`)
 ) ;
 
 --
@@ -21,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `teachers` (
   `lastName` varchar(255) DEFAULT NULL,
   `password` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ;
+);
 
 --
 -- Table structure for table `students`
@@ -33,31 +45,32 @@ CREATE TABLE IF NOT EXISTS `students` (
   `studentClass` int DEFAULT NULL,
   `password` int DEFAULT NULL,
   `url` nvarchar(255),
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`studentClass`) REFERENCES `classes` (`classId`)
+);
+
+--
+-- Table structure for table `courses`
+--
+CREATE TABLE IF NOT EXISTS `courses` (
+  `courseId` int NOT NULL AUTO_INCREMENT,
+  `teacherId` int DEFAULT NULL,
+  `passingGrade` int DEFAULT NULL,
+  `courseName` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`courseId`),
+  FOREIGN KEY (`teacherId`) REFERENCES `teachers` (`id`)
 );
 
 --
 -- Table structure for table `courseclasscontact`
 --
 CREATE TABLE IF NOT EXISTS `courseclasscontact` (
-  `classId` int not NULL,
-  `courseId` int not NULL,
-  primary key (classId, courseId)
+  `classId` int NOT NULL,
+  `courseId` int NOT NULL,
+  PRIMARY KEY (`classId`, `courseId`),
+  FOREIGN KEY (`classId`) REFERENCES `classes` (`classId`),
+  FOREIGN KEY (`courseId`) REFERENCES `courses` (`courseId`)
 ) ;
-
---
--- Table structure for table `courses`
---
-CREATE TABLE IF NOT EXISTS `courses` (
-  `courseId` int auto_increment ,
-  `teacherId` int DEFAULT NULL,
-  `passingGrade` int DEFAULT NULL,
-  `courseName` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`courseId`),
-  KEY `teacherId` (`teacherId`),
-  CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`teacherId`) REFERENCES `teachers` (`id`)
-) ;
---
 
 --
 -- Table structure for table `grades`
@@ -66,11 +79,10 @@ CREATE TABLE IF NOT EXISTS `grades` (
   `courseId` int NOT NULL,
   `studentId` int NOT NULL,
   `grade` int DEFAULT NULL,
-  PRIMARY KEY (`studentId`,`courseId`),
-  KEY `courseId` (`courseId`),
-  CONSTRAINT `grades_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
-  CONSTRAINT `grades_ibfk_2` FOREIGN KEY (`courseId`) REFERENCES `courses` (`courseId`)
-);
+  PRIMARY KEY (`studentId`, `courseId`),
+  FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
+  FOREIGN KEY (`courseId`) REFERENCES `courses` (`courseId`)
+) ;
 
 --
 -- Table structure for table `secretary`
@@ -85,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `secretary` (
 --
 -- Table structure for table `schedule`
 --
-CREATE TABLE IF NOT EXISTS schedule(
+CREATE TABLE IF NOT EXISTS `schedules`(
 id nvarchar(255),
 studentId int,
 data longtext,
@@ -95,37 +107,40 @@ FOREIGN KEY (`studentId`) REFERENCES `students` (`id`));
 --
 -- Dumping data for table `classes`
 --
-INSERT INTO `classes` VALUES (1,'software_engineering',60),(2,'graphic_design',75);
+INSERT INTO `classes` VALUES (1,'Software engineering',60),(2,'Graphic design',75),(3,'Quicq Web API Class',75);
 
 --
 -- Dumping data for table `teachers`
 --
-INSERT INTO `teachers` VALUES (1,'jjj','kkk',111),(22,'g','k',852),(44,'fg','h',678),(111,'fff','iiiii',8585);
+INSERT INTO `teachers` VALUES (1,'Tzipi','Cohen',111),(22,'Rachel','Levi',852),(44,'Chani','Israely',678),(111,'Leah','Kitov',8585),(214127391,'Chaya','Lipshitz',1);
 
 --
 -- Dumping data for table `students`
 --
-INSERT INTO `students` VALUES (4,'a','b',1,4,'das'),(55,'rr','tt',1,123,'df'),(222,'jj','xx',1,456,'aert'),(555,'rr','tt',2,789,'et'),(214426884,'Leah','Beckerman',1,6884,'ad');
-
---
--- Dumping data for table `courseclasscontact`
---
-INSERT INTO `courseclasscontact` VALUES (1,1), (2,2), (4,4), (6,6), (3,3);
+INSERT INTO `students` VALUES (4,'Devora','Levin',1,4,'das'),(55,'Ruthi','Kedem',1,123,'df'),(222,'Efrat','Chananov',2,456,'aert'),(555,'Yael','Shimony',2,789,'et'),(214426884,'Leah','Beckerman',3,6884,'ad');
 
 -- Dumping data for table `courses`
 --
-INSERT INTO `courses` VALUES (1,1,60,'Infi'),(2,22,60,'C++'),(3,22,60,'full_stack'),(4,22,60,'video'),(6,111,60,'afterEffects');
+INSERT INTO `courses` VALUES (1,1,60,'Infi'),(2,22,60,'C++'),(3,22,60,'Photoshop'),(4,44,60,'video'), (6,111,60,'afterEffects'), (7,214127391,60,'full_stack');
 
+
+-- Dumping data for table `courseclasscontact`
+--
+INSERT INTO `courseclasscontact` VALUES (1,1), (1,2), (2,3), (2,4), (2,6), (3, 7);
+
+select cc.courseId, students.id
+from courseclasscontact as cc join students on cc.classId = students.studentClass;
 --
 -- Dumping data for table `grades`
 --
-INSERT INTO `grades` VALUES (1,4,50),(2,4,1020),(3,4,98),(2,55,50),(3,55,82),(2,222,99),(1,214426884,99),(2,214426884,100);
+INSERT INTO `grades` VALUES (1,4,50),(2,4,50),(1,55,1020),(2,55,98),(3,222,50),(4,222,82),(6,222,99),(3,555,50),(4,555,82),(6,555,99),(7,214426884,99);
 
 --
 -- Dumping data for table `secretary`
 --
-INSERT INTO `secretary` VALUES (88888,'Tamar','Levi',789);
+INSERT INTO `secretary` VALUES (88888,'Tamar','Yaakovi',789);
+
 --
--- Dumping data for table `schedule`
+-- Dumping data for table `schedules`
 --
-INSERT INTO `schedule` VALUES('1', 4,"fff");
+INSERT INTO `schedules` VALUES(1, 4, 'hello');
