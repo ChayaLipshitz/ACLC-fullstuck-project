@@ -105,6 +105,20 @@ primary key (`id`),
 FOREIGN KEY (`studentId`) REFERENCES `students` (`id`));
 
 --
+-- Table structure for table `assignments`
+--
+CREATE TABLE IF NOT EXISTS `assignments`(
+id int NOT NULL AUTO_INCREMENT,
+studentId int,
+courseId int,
+submissionDate datetime,
+url nvarchar(255) not null,
+primary key (`id`),
+FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
+FOREIGN KEY (`courseId`) REFERENCES `courses` (`courseId`)
+);
+
+--
 -- Dumping data for table `classes`
 --
 INSERT INTO `classes` VALUES (1,'Software engineering',60),(2,'Graphic design',75),(3,'Quicq Web API Class',75);
