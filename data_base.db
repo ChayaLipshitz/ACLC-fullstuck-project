@@ -3,8 +3,9 @@ USE `aclc`;
 SHOW TABLES;
 
 
--- tables names: classes, teachers, students, courseclasscontact, courses, grades, secretary, schedule
+-- tables names: classes, teachers, students, courseclasscontact, courses, grades, secretary, schedule, assignments
 
+drop table if exists assignments;
 drop table if exists schedules;
 drop table if exists secretary;
 drop table if exists grades;
