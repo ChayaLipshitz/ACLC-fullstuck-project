@@ -1,0 +1,7 @@
+in react:
+npm i @mui/material
+npm install --save @progress/kendo-licensing
+
+
+in node:
+npm i node-datetime

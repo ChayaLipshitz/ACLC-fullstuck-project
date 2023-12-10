@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:  
+  aclc_database:
+    image: mysql
+    restart: always
+    container_name: data_base
+    environment:  
+       MYSQL_ROOT_PASSWORD: chl0504165772
+       MYSQL_DATABASE: aclc
+       MYSQL_USER: aclc
+       MYSQL_PASSWORD: chl0504165772
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"    
+    networks:
+      - app-aclc
+    volumes:
+      - ./data_base/data_base.sql:/docker-entrypoint-initdb.d/data_base.sql
+
+
+  aclc_client:
+    build: ./client/aclc/
+    ports:
+      - 3000:3000
+    depends_on:
+      - aclc_database
+      - aclc_server
+    networks:
+      - app-aclc
+
+
+  aclc_server:
+    build: ./server/
+    environment:
+      - DB_HOST=data_base
+      - DB_USER=root
+      - DB_PASSWORD=chl0504165772
+      - DB_DATABASE=aclc
+      - DB_PORT=3306
+    ports:
+      - 8080:8080
+    depends_on:
+      - aclc_database
+    networks:
+      - app-aclc
+
+networks:
+  app-aclc:
+    driver: bridge
