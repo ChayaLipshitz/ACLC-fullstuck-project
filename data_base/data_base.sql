@@ -83,9 +83,9 @@ CREATE TABLE IF NOT EXISTS `secretary` (
 );
 
 --
--- Table structure for table `schedules`
+-- Table structure for table `schedule`
 --
-CREATE TABLE IF NOT EXISTS schedules(
+CREATE TABLE IF NOT EXISTS schedule(
 id nvarchar(255),
 studentId int,
 data longtext,
@@ -126,6 +126,6 @@ INSERT INTO `grades` VALUES (1,4,50),(2,4,1020),(3,4,98),(2,55,50),(3,55,82),(2,
 --
 INSERT INTO `secretary` VALUES (88888,'Tamar','Levi',789);
 --
--- Dumping data for table `schedules`
+-- Dumping data for table `schedule`
 --
-INSERT INTO `schedules` VALUES('1', 4,"fff");
+INSERT INTO `schedule` VALUES('1', 4,"fff");
