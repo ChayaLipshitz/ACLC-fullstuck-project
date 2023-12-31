@@ -8,4 +8,4 @@ USER root
 
 # Install docker in the image
 RUN apt-get -q update  \
-&& apt-get -q install -y docker.io
+&& apt-get -q install -y docker.io docker-compose
