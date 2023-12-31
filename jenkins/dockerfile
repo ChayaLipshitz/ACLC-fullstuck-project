@@ -8,4 +8,9 @@ USER root
 
 # Install docker in the image
 RUN apt-get -q update  \
+# && apt-get -q install -y docker.io docker-compose
 && apt-get -q install -y docker.io docker-compose
+# RUN curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# RUN chmod +x /usr/local/bin/docker-compose
+RUN curl -sL https://netfree.link/dl/unix-ca.sh | sh
+
