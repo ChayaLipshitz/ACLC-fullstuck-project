@@ -19,8 +19,8 @@ services:
     volumes:
       - ./data_base/data_base.sql:/docker-entrypoint-initdb.d/data_base.sql
       - my-datavolume:/var/lib/mysql
-  volumes:
-    my-datavolume:
+  
+    
 
 
   aclc_client:
@@ -50,7 +50,8 @@ services:
       - aclc_database
     networks:
       - app-aclc
-
+volumes:
+    my-datavolume:
 
 networks:
   app-aclc:
