@@ -14,7 +14,7 @@ pipeline{
                     // sh 'docker rm ACLC'
                     // sh "docker build --tag ACLC:${dockerTag} ."
                     sh "ls"
-                    sh "docker-compose up"
+                    sh "docker compose up"
                 }
             }
         }
@@ -85,4 +85,5 @@ pipeline{
     //         sh 'docker logout'  
     //     }
     // }
+}
 }
