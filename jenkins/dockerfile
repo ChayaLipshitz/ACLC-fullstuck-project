@@ -1,0 +1,11 @@
+# Using jenkins image
+FROM jenkins/jenkins:lts-jdk17
+
+
+# Define the user to root user
+USER root
+
+
+# Install docker in the image
+RUN apt-get -q update  \
+&& apt-get -q install -y docker.io
