@@ -119,6 +119,8 @@ primary key (`id`),
 FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
 FOREIGN KEY (`courseId`) REFERENCES `courses` (`courseId`));
 
+
+
 --
 -- Dumping data for table `classes`
 --  ;
