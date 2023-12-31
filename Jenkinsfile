@@ -11,7 +11,7 @@ pipeline{
                     sh "ls"
                     // sh "docker-compose up"
                     // sh "docker-compose down"
-                    sh "docker-compose up -d --force-recreate"
+                    sh "docker-compose up -d --force-recreate --build"
                     // sh "docker-compose up -d --no-deps --build <service_name>"
                     // sh "docker-compose up -d --no-deps --build <service_name>" 
                 }
