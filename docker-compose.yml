@@ -42,7 +42,7 @@ services:
       - DB_DATABASE=aclc
       - DB_PORT=3306
     ports:
-      - 8000:8000
+      - 8080:8080
     depends_on:
       - aclc_database
     networks:
