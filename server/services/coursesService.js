@@ -10,7 +10,7 @@ async function getAll(){
 async function getStudentsCourses(userId) {
     console.log(userId);
     let a=`select cc.courseId, courseName, passingGrade, t.firstName as teacherFirstName, t.lastName as teacherLastName
-    from students s join courseClassContact cc on s.studentClass=cc.classId 
+    from students s join courseclasscontact cc on s.studentClass=cc.classId 
     join courses cr on cr.courseId = cc.courseId
     join teachers t on t.id = cr.teacherId
     where s.id = ${userId}`;
@@ -22,10 +22,10 @@ async function getStudentsCourses(userId) {
 
 function getGroup(courseID) {
     let result = db.query(`select s.id , s.firstName as studentFirstName , s.lastName as studentLastName , g.grade as grade
-    from courseClassContact cc
+    from courseclasscontact cc
     join students s on cc.classId = s.studentClass
     left join grades g on s.id = g.studentId and cc.courseId = g.courseId
-     where cc.courseId = ${courseID}`);
+    where cc.courseId = ${courseID}`);
     // console.log(studentId)
     console.log(result);
     return result;

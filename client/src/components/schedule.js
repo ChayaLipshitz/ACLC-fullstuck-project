@@ -8,9 +8,6 @@ import {
 } from "@progress/kendo-react-scheduler";
 import { useEffect, useState } from "react";
 import { guid } from "@progress/kendo-react-common";
-//import { getData } from "../../../server/services/scheduleService";
-
-
 
 const compareById = matchingItem => item => matchingItem.id === item.id;
 
@@ -108,8 +105,7 @@ const RoomScheduler = props => {
 
     return (
         <div className="k-my-8">
-            <div className="k-mb-4 k-font-weight-bold">Book a room</div>
-            <Scheduler
+            <Scheduler             
                 editable
                 data={data}
                 onDataChange={onDataChange}

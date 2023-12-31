@@ -5,6 +5,8 @@ const router = express.Router();
 const assignmentsService = require('../services/assignmentsService');
 const cors = require('cors');
 const multer = require('multer');
+const fs = require('fs');
+
 
 const corsOptions = {
     origin: '*',
@@ -39,7 +41,6 @@ router.post('/file', upload.single('file'), function (req, res) {
 
 router.post('/details', upload.single('file'), async function (req, res, next) {
 
-    // console.log(req);
     console.log("=========================================================in file details==========================================================");
     var dateTime = require('node-datetime');
     var dt = dateTime.create();
@@ -52,7 +53,6 @@ router.post('/details', upload.single('file'), async function (req, res, next) {
         console.error(`Error while getting students `, err.message);
         next(err);
     }
-    //res.json({})
 });
 
 
@@ -71,7 +71,6 @@ router.get('/details/:id/:course', async function (req, res, next) {
 
 router.get('/file/:id', async function (req, res, next) {
     console.log("====================================get file url=========================================");
-    // console.log(req.params);
     try {
         let data = await assignmentsRouter.getStudentCourseFile(req.params.id);
         res.send(data);
@@ -106,6 +105,22 @@ router.get('/', async function (req, res, next) {
 });
 
 
+router.get('/pdffiles/:courseID/:studentID', async function (req, res) {
+    try {
+        const fileUrl = await assignmentsService.getStudentCourseFile(req.params.studentID, req.params.courseID);
+        if (fileUrl.length) {  
+            console.log("url is: ", fileUrl[0].url);
+            var file = fs.readFileSync(fileUrl[0].url);
+            res.contentType("application/pdf");
+            res.send(file);
+        }
+        else{
+            console.log("no URL");
+        }
+    } catch (error) {
+        console.error(error)
+    }
+  });
+
+
 module.exports = router;
-
-

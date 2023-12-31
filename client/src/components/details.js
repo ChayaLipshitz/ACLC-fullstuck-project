@@ -1,6 +1,6 @@
-import { Routes, Route } from 'react-router-dom'
-import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom'
+// import { Routes, Route } from 'react-router-dom'
+// import { useEffect, useState } from 'react';
+// import { NavLink } from 'react-router-dom'
 
 export default function Details(props) {
     const user =props.user;

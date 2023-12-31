@@ -1,20 +1,22 @@
-import { Routes, Route, Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
-import { useEffect, useState, File } from 'react';
-import { NavLink } from 'react-router-dom'
+// import { Routes, Route, Link } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
+// import { NavLink } from 'react-router-dom'
 import { Document, Page, pdfjs } from "react-pdf";
 import './singleCourse.css'
+import { NavLink, Route, Routes } from 'react-router-dom';
+import CourseTasks from './courseTasks';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export default function SingleCourse(props) {
     const user = props.user;
     let counter = 0;
-    const course = props.item
+    const course = props.course
     const [toShow, setToShow] = useState(false)
     const [showHide, setToShowHide] = useState("to show")
     const [m_file, setFile] = useState({ preview: '', data: '' })
-    const [numPages, setNumPages] = useState(null);
-    const [fileName, setFileName] = useState("select file");
+    const [taskNumber, setTask] = useState(1);
+    const [fileName, setFileName] = useState("");
 
     const handleSubmit = async (e) => {
         setFileName(m_file.data.name ? m_file.data.name : "select file")
@@ -26,9 +28,11 @@ export default function SingleCourse(props) {
             const fileDetails = {
                 "studentId": user.id,
                 "courseId": e.target[0].className,
-                "url": m_file.data.name
+                "url": m_file.data.name,
+                "assignmet_num": e.target.assignmet_num.value,
+                "taskNumber": taskNumber
             }
-            console.log("formData", formData);
+            console.log("course id", e.target[0].className);
             const response1 = await fetch('http://localhost:8080/api/assignments/file', {
                 method: 'POST',
                 body: formData, //formData,
@@ -36,6 +40,7 @@ export default function SingleCourse(props) {
                 boundary: "MyBoundary",
                 //assignmet_num: e.target.assignmet_num.value
             })
+            console.log("e.target:", e.target.assignmet_num.value);
             const response2 = await fetch('http://localhost:8080/api/assignments/details', {
                 method: 'POST',
                 body: JSON.stringify(fileDetails),
@@ -66,34 +71,46 @@ export default function SingleCourse(props) {
         console.log('e.target.value.slice(`C:\fakepath`)', e.target.value.slice("C:"));
 
         console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeee", e);
-        // String fileName = e.name;
         setFile(file)
     }
 
-    return (
-        <div key={counter++}>
-            <h2>{course.courseName}</h2>
-            <h3>passing grade: {course.passingGrade}</h3>
-            <h3>teacher: {course.teacherFirstName}</h3>
-            <h1>Upload file</h1>
-            {m_file.preview && <button onClick={() => { setToShow(!toShow); setToShowHide(showHide=="to show"?"to hide":"to show") }}>{showHide}</button>}
-            {m_file.preview && toShow && <Document file={m_file.preview} width='100' height='100' onLoadError={console.error} onLoadSuccess={({ numPages }) => { setNumPages(numPages) }}>
-                {Array.apply(null, Array(numPages))
-                    .map((x, i) => i + 1)
-                    .map(page => <Page key={counter++} pageNumber={page} />)}
-            </Document>}
-            <hr />
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <input type='file' name='file' style={{ 'display': 'none' }} placeholder={fileName} id="file" accept=".pdf" aria-label='hj' className={`${course.courseId}`} onChange={handleFileChange} ></input>
-                    <label id='labelToFile' htmlFor="file">{fileName}</label>
-                </div>
-                <select name="assignmet_num" >
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => { return <option key={item} value={`${item}`}>{item}</option> })}
-                </select>
-                <button placeholder="choose-file" type='submit'>Submit</button>
+    const handleTaskChanges = (e) => {
+        console.log("e.target.value of the select: ", e.target.value);
+        setTask(e.target.value)
+    }
 
-            </form>
+    return (
+        <div key={props.key}>
+
+            <h2><b>{course.courseName} course</b></h2>
+            <h3>Teacher: {course.teacherFirstName} {course.teacherLastName}</h3>
+            <NavLink activeclassname="active" className="nav-link" exact="true" to={`/student/courses/${course.courseId}-tasks`}> The tasks</NavLink>
+            <Routes>
+                <Route exact="true" element={<CourseTasks user={user} />} path={`/${course.courseId}-tasks/*`} />{' '}
+            </Routes>
+            {/* <form onSubmit={handleSubmit}>
+                <div>
+                    <input
+                        type='file'
+                        name='file'
+                        style={{ 'display': 'none' }}
+                        placeholder={fileName}
+                        id="file"
+                        accept=".pdf"
+                        aria-label='hj'
+                        className={`${course.courseId}`}
+                        onChange={handleFileChange} ></input>
+                    <label id='labelToFile' htmlFor="file">Upload your task</label>
+                    <a href={m_file.preview} target="_blank">{fileName}</a>
+                </div> */}
+
+                {/* {[...new Array(9).keys()].map(item => { return <option key={item + 1} value={`${item + 1}`} >{`task ${item + 1}`}</option> })} */}
+
+                {/* <select name="assignment_num" onChange={(e) => handleTaskChanges(e)} >
+                    {[...new Array(9).keys()].map(item => { return <option key={item + 1} value={`${item + 1}`} >{`task ${item + 1}`}</option> })}
+                </select> */}
+                {/* <button placeholder="choose-file" type='submit'>Submit</button>
+            </form> */}
         </div>
     )
 }

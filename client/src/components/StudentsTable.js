@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom'
-import { NavLink } from 'react-router-dom'
+import { Link, Route, Routes } from 'react-router-dom'
+import SignUp from './signUp';
 
 export default function StudentsTable(props) {
-    let navigate = useNavigate();
 
-    const user = props.user;
+    // const user = props.user;
     const [data, setData] = useState([]);
     let counter = 0;
 
@@ -18,14 +17,10 @@ export default function StudentsTable(props) {
     useEffect(() => { getStudents() }, [])
 
 
-    let addStudent = () => {
-        navigate('/signUp')
-    }
-
     let deleteStudent = async (id) => {
         console.log(id);
         let res = await fetch(`http://localhost:8080/api/students/${id}`, { method: 'DELETE' })
-        res = await res.json()
+        await res.json()
         getStudents()
     }
 
@@ -36,13 +31,13 @@ export default function StudentsTable(props) {
                 <h4>students</h4>
                 <table>
                     <tr >
-                        <td>id</td>
-                        <td>last name</td>
-                        <td>first name</td>
-                        <td>class</td>
+                        <th>id</th>
+                        <th>last name</th>
+                        <th>first name</th>
+                        <th>class</th>
                     </tr>
                     {data.map((item) => {
-                        return <>
+                        return (
 
                             <tr key={counter++}>
                                 <td>{item.id}</td>
@@ -51,11 +46,11 @@ export default function StudentsTable(props) {
                                 <td>{item.className}</td>
                                 <td><button name="deleteBtn" onClick={() => deleteStudent(item.id)}>🗑</button></td>
                             </tr>
-                        </>
+                        )
                     })}
                 </table>
-                <button className="btn" name="+button" onClick={() => { addStudent() }}>+</button>
 
+              
             </>
         </>)
 }

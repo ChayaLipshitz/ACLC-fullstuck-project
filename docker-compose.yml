@@ -1,11 +1,11 @@
 version: '3.8'
 
-services:  
+services:
   aclc_database:
     image: mysql
     restart: always
-    container_name: data_base
-    environment:  
+    container_name: aclc_data_base
+    environment:
        MYSQL_ROOT_PASSWORD: chl0504165772
        MYSQL_DATABASE: aclc
        MYSQL_USER: aclc
@@ -13,7 +13,7 @@ services:
     expose:
       - "3306"
     ports:
-      - "3306:3306"    
+      - "3306:3306"
     networks:
       - app-aclc
     volumes:
@@ -21,20 +21,22 @@ services:
 
 
   aclc_client:
-    build: ./client/aclc/
+    build: ./client/
+    container_name: aclc_client
     ports:
       - 3000:3000
     depends_on:
-      - aclc_database
       - aclc_server
+      # - aclc_database
     networks:
       - app-aclc
 
 
   aclc_server:
     build: ./server/
+    container_name: aclc_server
     environment:
-      - DB_HOST=data_base
+      - DB_HOST=aclc_data_base
       - DB_USER=root
       - DB_PASSWORD=chl0504165772
       - DB_DATABASE=aclc

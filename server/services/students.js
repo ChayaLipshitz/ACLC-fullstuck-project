@@ -46,7 +46,7 @@ async function deleteSingle(studentId) {
         `delete from students where id = ${studentId}`
     )
     const result3 = await db.query(
-        `delete from schedules where studentId = ${studentId}`
+        `delete from schedule where studentId = ${studentId}`
     )
     let message = 'Error in deleting student';
 

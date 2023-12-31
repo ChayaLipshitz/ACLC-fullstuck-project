@@ -1,8 +1,19 @@
 CREATE DATABASE  IF NOT EXISTS `aclc` ;
 USE `aclc`;
 
--- tables names: classes, teachers, students, courseclasscontact, courses, grades, secretary, schedule
---
+-- tables names: classes, teachers, students, courseclasscontact, courses, grades, secretary, schedule, assignments
+-- drop table assignments;
+-- drop table schedule;
+-- drop table secretary;
+-- drop table grades;
+-- drop table courses;
+-- drop table courseclasscontact;
+-- drop table students;
+-- drop table teachers;
+-- drop table classes;
+
+
+-- --
 -- Table structure for table `classes`
 --
 CREATE TABLE IF NOT EXISTS `classes` (
@@ -44,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `courseclasscontact` (
   `courseId` int not NULL,
   primary key (classId, courseId)
 ) ;
+
 
 --
 -- Table structure for table `courses`
@@ -92,20 +104,35 @@ data longtext,
 primary key (`id`),
 FOREIGN KEY (`studentId`) REFERENCES `students` (`id`));
 
+
+--
+-- Table structure for table `assignments`
+--
+CREATE TABLE IF NOT EXISTS `assignments` (
+`id` INT AUTO_INCREMENT,
+`studentId` int NOT NULL,
+`courseId` int NOT NULL,
+`taskNumber` int NOT NULL,
+`date` DATETIME NOT NULL,
+`url` varchar(255)  NULL,
+primary key (`id`),
+FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
+FOREIGN KEY (`courseId`) REFERENCES `courses` (`courseId`));
+
 --
 -- Dumping data for table `classes`
---
+--  ;
 INSERT INTO `classes` VALUES (1,'software_engineering',60),(2,'graphic_design',75);
 
 --
 -- Dumping data for table `teachers`
 --
-INSERT INTO `teachers` VALUES (1,'jjj','kkk',111),(22,'g','k',852),(44,'fg','h',678),(111,'fff','iiiii',8585);
+INSERT INTO `teachers` VALUES (1,'Rachel','Levi',111),(22,'Naama','Kastel',852),(44,'Shoshi','Koplowitch',678),(111,'Simcha','Kaner',8585);
 
 --
 -- Dumping data for table `students`
 --
-INSERT INTO `students` VALUES (4,'a','b',1,4,'das'),(55,'rr','tt',1,123,'df'),(222,'jj','xx',1,456,'aert'),(555,'rr','tt',2,789,'et'),(214426884,'Leah','Beckerman',1,6884,'ad');
+INSERT INTO `students` VALUES (4,'Ahuva','Fieg',1,4,'das'),(55,'Tzipora','Grin',1,123,'df'),(222,'Malka','Cohen',1,456,'aert'),(555,'Mira','Nusboim',2,789,'et'),(214127391,'Chaya','Lipshitz',1,7391,'ad');
 
 --
 -- Dumping data for table `courseclasscontact`
@@ -119,12 +146,12 @@ INSERT INTO `courses` VALUES (1,1,60,'Infi'),(2,22,60,'C++'),(3,22,60,'full_stac
 --
 -- Dumping data for table `grades`
 --
-INSERT INTO `grades` VALUES (1,4,50),(2,4,1020),(3,4,98),(2,55,50),(3,55,82),(2,222,99),(1,214426884,99),(2,214426884,100);
+INSERT INTO `grades` VALUES (1,4,50),(2,4,1020),(3,4,98),(2,55,50),(3,55,82),(2,222,99),(1,214127391,99),(2,214127391,100);
 
 --
 -- Dumping data for table `secretary`
 --
-INSERT INTO `secretary` VALUES (88888,'Tamar','Levi',789);
+INSERT INTO `secretary` VALUES (88888,'Tamar','Levi',789),(4444,'Tzivia','Twerski',123) ;
 --
 -- Dumping data for table `schedule`
 --

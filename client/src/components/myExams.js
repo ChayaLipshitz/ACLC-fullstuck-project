@@ -1,8 +1,4 @@
-import { Routes, Route, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom'
-
-import { useNavigate } from 'react-router-dom'
 
 
 export default function MyExams(props) {

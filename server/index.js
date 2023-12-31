@@ -35,5 +35,6 @@ app.use("/api/assignments", assignmentsRouter);
 app.use("/api/schedule", scheduleRouter);
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`); console.log("process.env.DB_HOST", process.env.DB_HOST);
+  console.log(`ACLC - server listening at http://localhost:${port}`);
+  // console.log("process.env.DB_HOST", process.env.DB_HOST);
 });

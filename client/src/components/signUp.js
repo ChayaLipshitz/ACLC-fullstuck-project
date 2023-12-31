@@ -1,5 +1,5 @@
-import React, { useEffect, useReducer, useState } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 export default function SignUp(props) {
     let counter = 0;
 
@@ -7,17 +7,20 @@ export default function SignUp(props) {
     const [m_classes, setClasses] = useState([]);
     const [teacher, setTeacher] = useState(false);
     const [student, setStudent] = useState(false);
-    const [status, setStatus] = useState({ student: false, teacher: false });
+    // const [status, setStatus] = useState({ student: false, teacher: false });
     const [courses, setCourses] = useState([]);
-    const [add, setAdd] = useState(false);
-    const [course, setCourse] = useState({});
-    const [courseArr, setARR] = useState({});
+    // const [add, setAdd] = useState(false);
+    // const [course, setCourse] = useState({});
+    // const [courseArr, setARR] = useState({});
 
 
 
     let navigate = useNavigate();
     useEffect(() => {
-        setCourses(props.coursesTable)
+        if (props.courses != undefined) {
+            // setCourses(props.courses)
+            console.log("i have courses!!");
+        }
         console.log("use");
         getOptions();
     }, [])
@@ -33,10 +36,10 @@ export default function SignUp(props) {
         setStudent(true)
     }
 
-    let addCourse = () => {
-        return <h2>hi</h2>
+    // let addCourse = () => {
+    //     return <h2>hi</h2>
 
-    }
+    // }
 
     // let applyCourse = async (event) => {
     //     setAdd(false)
@@ -49,14 +52,12 @@ export default function SignUp(props) {
 
     // }
 
-
-
-
     async function getOptions() {
-        let data = await fetch(`http://localhost:8080/api/classes`, { method: 'GET' })
+        const status = teacher ? 'classes' : 'courses'
+        let data = await fetch(`http://localhost:8080/api/${status}`, { method: 'GET' })
         data = await data.json();
         console.log(data);
-        setClasses(data);
+        teacher ? setCourses(data) : setClasses(data);
     }
 
     let sendData = async (event) => {
@@ -92,7 +93,7 @@ export default function SignUp(props) {
             console.log(`http://localhost:8080/api/${user.status}`);
 
             let res = await fetch(`http://localhost:8080/api/${user.status}s`, req)
-            res = await res.json();
+            await res.json();
         }
         catch (err) {
             alert(err)
@@ -103,42 +104,51 @@ export default function SignUp(props) {
 
 
     return (
-        <form className='signup' onSubmit={sendData}>
-            <input placeholder="your id number here" name="id" className="signup_input" type=""></input>
-            <input placeholder="your first here" name="firstName" className="signup_input"></input>
-            <input placeholder="your last name here" name="lastName" className="signup_input"></input>
-            <input placeholder="password" type="password" name="pass" className='signup__input' />
+        <>
+            <form className='signup' onSubmit={sendData}>
+                <input placeholder="ID number" name="id" className="signup_input" type=""></input>
+                <input placeholder="First name" name="firstName" className="signup_input"></input>
+                <input placeholder="Last name" name="lastName" className="signup_input"></input>
+                <input placeholder="Password" type="password" name="pass" className='signup__input' />
 
 
-            <input type="radio" value="teacher" name="changeStat" onClick={changeTeacher}></input>
-            <label htmlFor="teacher">teacher</label>
-            <input type="radio" value="student" name="changeStat" onClick={changeStudent}></input>
-            <label htmlFor="student">student</label>
+                <input type="radio" value="teacher" name="changeStat" onClick={changeTeacher}></input>
+                <label htmlFor="teacher">teacher</label>
+                <input type="radio" value="student" name="changeStat" onClick={changeStudent}></input>
+                <label htmlFor="student">student</label>
 
-            {student && <select name="class">
-                {m_classes.map(item => {
-                    return (<option key={counter++} value={item.classId}>{item.className}</option>)
-                })}
-            </select>}
+                {student && <select name="class">
+                    {m_classes.map(item => {
+                        return (<option key={counter++} value={item.classId}>{item.className}</option>)
+                    })}
+                </select>}
 
-            {teacher && <div name="courses" >
-                {courses.map(item => {
-                    return (<div key={counter++}><input type="checkbox" value={item.courseId} />
-                        <label htmlFor={item.courseId} >{item.courseName}</label></div>)
-                })}
-            </div>}
+                {teacher && <div name="courses" >
+                    {courses.map(item => {
+                        return (<div key={counter++}><input type="checkbox" value={item.courseId} />
+                            <label htmlFor={item.courseId} >{item.courseName}</label></div>)
+                    })}
+                </div>}
 
-            {/* {add && <form onSubmit={applyCourse}>
+                {/* {add && <form onSubmit={applyCourse}>
                 <input type="text" name="name" placeholder="course name"></input>
                 <input type="number" name="grade" placeholder="passing grade"></input>
                 <input type="number" name="id" placeholder="course id"></input>
                 {/* {courses.map(item =>{<><input type = "checkbox" name = "courseToAdd" value = {item.courseName}></input> <label htmlFor="courseToAdd">{item.courseName}</label></>})} */}
-            {/* </form>} } */}
+                {/* </form>} } */}
 
 
-            <button type="submit" className="button signup__submit" >Sign Up Now
-                <i className="button__icon fas fa-chevron-right"></i></button>
-        </form>
+                <button type="submit" className="button signup__submit" >Sign Up Now
+                    <i className="button__icon fas fa-chevron-right"></i></button>
+            </form>
+
+
+        </>
+
+
+
+
+
     )
 }
 

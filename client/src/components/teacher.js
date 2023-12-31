@@ -1,9 +1,10 @@
 import TeacherCourse from './teacherCourse';
 import Details from './details'
 import { Routes, Route } from 'react-router-dom'
-import { useRef, useEffect, useState, File } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom'
-import { Document, Page, pdfjs } from "react-pdf";
+import { pdfjs } from "react-pdf";
+import SignOut from './signOut';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export default function Teacher() {
@@ -27,38 +28,18 @@ export default function Teacher() {
         getCourses();
     }, []);
 
-
-    // state = {
-    //     numPages: null,
-    //     pageNumber: 1,
-    // }
-
-    // onDocumentLoadSuccess = ({ numPages }) => {
-    //     this.setState({ numPages });
-    // }
-
-
-
-
-
-    
-
-
-
-
     return (
-        <>
-            <Details user={user} />
-            <h1>Hello {user.lastName} {user.firstName}</h1>
-            {courses.map(item => { return <NavLink activeclassname="active" key={counter++} className="nav-link" exact="true" to={`/teacher/${item.courseName}`} >{item.courseName}</NavLink> })}
+        <>            
+            <h1>Hello <Details user={user}/></h1>
+            {courses.length>0 && <div>your courses:</div>}
+            {courses.length>0 && courses.map(item => { return <NavLink activeclassname="active" key={counter++} className="nav-link" exact="true" to={`/teacher/${item.courseName}`} ><h3>{item.courseName}</h3></NavLink> })}
             <Routes>
                 {courses.map(item => { return <Route exact="true" key={counter++} element={<TeacherCourse course={item} />} path={`/${item.courseName}`} /> })}
             </Routes>
-            
+
+            {!courses.length && <h3>You don't teach any courses yet!!</h3>}
+            <SignOut/>
             {/* {status && <h4>{status}</h4>} */}
-
-
-
         </>
     )
 }

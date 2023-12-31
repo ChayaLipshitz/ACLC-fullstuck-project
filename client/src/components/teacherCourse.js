@@ -1,10 +1,10 @@
 
 
 
-import { Routes, Route, Link } from 'react-router-dom'
+// import { Routes, Route, Link } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
+// import { NavLink } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 import TeacherCourseStudents from './teacherCourseStudent';
 
 export default function TeacherCourse(props) {
