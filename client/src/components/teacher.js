@@ -30,7 +30,7 @@ export default function Teacher() {
 
     return (
         <>            
-            <h1>Hello <Details user={user}/></h1>
+            <h1>Good day </h1><Details user={user}/><h1>!!!</h1>
             {courses.length>0 && <div>your courses:</div>}
             {courses.length>0 && courses.map(item => { return <NavLink activeclassname="active" key={counter++} className="nav-link" exact="true" to={`/teacher/${item.courseName}`} ><h3>{item.courseName}</h3></NavLink> })}
             <Routes>
